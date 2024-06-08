@@ -1,0 +1,117 @@
+1.Telnet Connection for Router R1:*
+
+⁠    enable
+   configure terminal
+   line vty 0 4
+   password cisco123
+   login
+   exit
+
+2.SSH Connection for Router R2:*
+
+⁠    enable
+   configure terminal
+   hostname R2
+   ip domain-name mynetwork.com
+   crypto key generate rsa modulus 1024
+   ip ssh version 2
+   username admin privilege 15 secret adminpass123
+   line vty 0 4
+   transport input ssh
+   login local
+   exit
+
+3.Access Control List (ACL) for Admin PCs:
+
+⁠    enable
+   configure terminal
+   access-list 1 permit 192.168.1.10
+   access-list 1 permit 192.168.1.20
+   access-list 1 deny any
+   line vty 0 4
+   access-class 1 in
+   exit
+
+4.vlan STP Configuration Example:
+
+   On Switch1 (Root Bridge):
+   
+⁠    enable
+   configure terminal
+   spanning-tree vlan 1 priority 4096
+   exit
+    ⁠
+   On Switch2 and Switch3:
+   
+⁠    enable
+   configure a
+   spanning-tree vlan 1 priority 8192
+   exit
+
+5.Console Password
+
+Enable
+configure terminal
+line console 0
+password [password]
+login
+
+6. Privilege  password
+Enable
+configure terminal
+enable secret 123456
+
+7.Static Routing:
+   
+⁠   ip route <destination network> <subnet mask> <next hop IP>
+    ⁠
+8.⁠Dynamic Routing (RIP):
+
+⁠    router rip
+   version 2
+   network <network address>
+    ⁠
+
+9.DHCP:
+   
+⁠    ip dhcp pool <pool name>
+   network <network address> <subnet mask>
+   default-router <default gateway>
+
+   ip dhcp excluded-address <1.1.10.>
+
+10.vlan
+
+enable
+configure terminal
+vlan 10
+name VLAN10
+vlan 20
+name VLAN20
+exit
+interface range fa0/1-5
+switchport mode access
+switchport access vlan 10
+interface range fa0/6-10
+switchport mode access
+switchport access vlan 20
+exit
+
+enable
+Config t
+Int fa0/0/0
+switch port mode trunk
+
+router
+
+enable
+configure terminal
+interface fa0/0
+no shutdown
+interface fa0/0.10
+encapsulation dot1Q 10
+ip address 192.168.10.1 255.255.255.0
+interface fa0/0.20
+encapsulation dot1Q 20
+ip address 192.168.20.1 255.255.255.0
+exit
